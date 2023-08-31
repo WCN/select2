@@ -55,8 +55,8 @@ test('static aria attributes are present', function (assert) {
 
   assert.equal(
     $selection.attr('role'),
-    'combobox',
-    'The container should identify as a combobox'
+    'searchbox',
+    'The container should identify as a searchbox'
   );
 
   assert.equal(
