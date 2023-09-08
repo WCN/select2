@@ -202,8 +202,6 @@ define([
       $offsetParent[0].isConnected
       ) {
       parentOffset = $offsetParent.offset();
-      parentOffset.top -= $offsetParent.scrollTop();
-      parentOffset.left -= $offsetParent.scrollLeft();
     }
 
     css.top -= parentOffset.top;
