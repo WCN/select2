@@ -1461,8 +1461,7 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.bind = function (container, $container) {
     var self = this;
-  //this needs to be appended in such a way that it doesnt break things.
-  var $describedby = $('<span class="visually-hidden" id="sr-description">' +
+    var $describedby = $('<span class="visually-hidden" id="sr-description">' +
               'This button opens a select. When results are available,' +
               'use up and down arrows to navigate and ' +
               'enter to select </span>');
