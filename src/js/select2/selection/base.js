@@ -85,7 +85,7 @@ define([
     container.on('open', function () {
       // When the dropdown is open, aria-expanded="true"
       self.$selection.attr('aria-expanded', 'true');
-      self.$selection.attr('aria-owns', '.select2-container');
+      self.$selection.attr('aria-owns', resultsId);
 
       self._attachCloseHandler(container);
     });
