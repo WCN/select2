@@ -1509,7 +1509,7 @@ S2.define('select2/selection/base',[
     container.on('open', function () {
       // When the dropdown is open, aria-expanded="true"
       self.$selection.attr('aria-expanded', 'true');
-      self.$selection.attr('aria-owns', '.select2-container');
+      self.$selection.attr('aria-owns', resultsId);
 
       self._attachCloseHandler(container);
     });
@@ -5563,6 +5563,7 @@ S2.define('select2/core',[
     this.dataAdapter = new DataAdapter($element, this.options);
 
     var $container = this.render();
+    $container.attr('id', this.id);
 
     this._placeContainer($container);
 
