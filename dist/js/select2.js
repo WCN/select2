@@ -5629,7 +5629,6 @@ S2.define('select2/core',[
     });
 
     // Hide the original select
-    console.log('opt', options);
     if (options.hideAccessibly == '0' || options.multiple) {
     $element[0].classList.add('select2-hidden-accessible');
     $element.attr('aria-hidden', 'true');
