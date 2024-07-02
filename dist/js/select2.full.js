@@ -1438,10 +1438,9 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.render = function () {
     var $selection = $(
-      '<span class="select2-selection" role="searchbox" ' +
-      ' aria-haspopup="true" aria-expanded="false">' +
-      '</span>'
-    );
+      '<span class="select2-selection" aria-describedby="sr-description"' +
+      ' role="button" aria-haspopup="true" aria-expanded="false">' +
+      '</span>');
 
     this._tabindex = 0;
 
@@ -1462,7 +1461,11 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.bind = function (container, $container) {
     var self = this;
-
+    var $describedby = $('<span class="visually-hidden" id="sr-description">' +
+              'This button opens a select. When results are available,' +
+              'use up and down arrows to navigate and ' +
+              'enter to select </span>');
+    this.$selection.after($describedby);
     var resultsId = container.id + '-results';
 
     this.container = container;
@@ -1489,7 +1492,19 @@ S2.define('select2/selection/base',[
 
     container.on('selection:update', function (params) {
       self.update(params.data);
-    });
+      self.$selection.attr('aria-label', params.data.resultsId);
+      var $label = self.$selection.attr('aria-label');
+      var $labeltext;
+      var $rendered = self.$selection.find('.select2-selection__rendered');
+      var $title = $rendered.attr('title');
+      if ($title == undefined) {
+        $labeltext = $label + 'No value currently selected.';
+      }
+      else {
+      $labeltext = $label + 'The selected value is:' + $title;
+      }
+      self.$selection.attr('aria-label', $labeltext);
+      });
 
     container.on('open', function () {
       // When the dropdown is open, aria-expanded="true"
@@ -1541,7 +1556,7 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype._attachCloseHandler = function (container) {
 
-    $(document.body).on('mousedown.select2.' + container.id, function (e) {
+    $(document.body).on('mouseup.select2.' + container.id, function (e) {
       var $target = $(e.target);
 
       var $select = $target.closest('.select2');
@@ -1561,7 +1576,7 @@ S2.define('select2/selection/base',[
   };
 
   BaseSelection.prototype._detachCloseHandler = function (container) {
-    $(document.body).off('mousedown.select2.' + container.id);
+    $(document.body).off('mouseup.select2.' + container.id);
   };
 
   BaseSelection.prototype.position = function ($selection, $container) {
@@ -1636,10 +1651,7 @@ S2.define('select2/selection/single',[
     var id = container.id + '-container';
 
     this.$selection.find('.select2-selection__rendered')
-      .attr('id', id)
-      .attr('role', 'textbox')
-      .attr('aria-readonly', 'true');
-    this.$selection.attr('aria-labelledby', id);
+      .attr('id', id);
     this.$selection.attr('aria-controls', id);
 
     this.$selection.on('mousedown', function (evt) {
@@ -5551,6 +5563,7 @@ S2.define('select2/core',[
     this.dataAdapter = new DataAdapter($element, this.options);
 
     var $container = this.render();
+    $container.attr('id', this.id);
 
     this._placeContainer($container);
 

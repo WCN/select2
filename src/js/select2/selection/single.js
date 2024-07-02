@@ -33,10 +33,7 @@ define([
     var id = container.id + '-container';
 
     this.$selection.find('.select2-selection__rendered')
-      .attr('id', id)
-      .attr('role', 'textbox')
-      .attr('aria-readonly', 'true');
-    this.$selection.attr('aria-labelledby', id);
+      .attr('id', id);
     this.$selection.attr('aria-controls', id);
 
     this.$selection.on('mousedown', function (evt) {

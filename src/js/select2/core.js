@@ -31,6 +31,7 @@ define([
     this.dataAdapter = new DataAdapter($element, this.options);
 
     var $container = this.render();
+    $container.attr('id', this.id);
 
     this._placeContainer($container);
 
