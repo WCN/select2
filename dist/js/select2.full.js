@@ -5571,7 +5571,9 @@ S2.define('select2/core',[
 
     // Set up the tabindex
 
-    if (options.hideAccessibly == '0' || options.multiple) {
+    if (options.hideAccessibly == '0' ||
+      typeof options.hideAccessibly === 'undefined' ||
+       options.multiple) {
     var tabindex = $element.attr('tabindex') || 0;
     Utils.StoreData($element[0], 'old-tabindex', tabindex);
     $element.attr('tabindex', '-1');
@@ -5629,7 +5631,9 @@ S2.define('select2/core',[
     });
 
     // Hide the original select
-    if (options.hideAccessibly == '0' || options.multiple) {
+    if (options.hideAccessibly == '0' ||
+      typeof options.hideAccessibly === 'undefined' ||
+      options.multiple) {
     $element[0].classList.add('select2-hidden-accessible');
     $element.attr('aria-hidden', 'true');
     }
