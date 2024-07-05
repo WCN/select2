@@ -1880,6 +1880,10 @@ S2.define('select2/selection/multiple',[
 
       var title = selection.title || selection.text;
 
+      if (title) {
+        $selection.attr('title', title);
+      }
+
       var removeItem = this.options.get('translations').get('removeItem');
 
       var $remove = $selection.find('.select2-selection__choice__remove');
