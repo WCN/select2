@@ -1438,7 +1438,7 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.render = function () {
     var $selection = $(
-      '<span class="select2-selection" aria-describedby="sr-description"' +
+      '<span class="select2-selection"' +
       ' role="button" aria-haspopup="true" aria-expanded="false">' +
       '</span>');
 
@@ -1461,11 +1461,14 @@ S2.define('select2/selection/base',[
 
   BaseSelection.prototype.bind = function (container, $container) {
     var self = this;
-    var $describedby = $('<span class="visually-hidden" id="sr-description">' +
+    var $describedby = $('<span class="visually-hidden" id="sr-description'+
+      container.id + '">' +
               'This button opens a select. When results are available,' +
               'use up and down arrows to navigate and ' +
               'enter to select </span>');
     this.$selection.after($describedby);
+    var srId = 'sr-description' + container.id;
+    this.$selection.attr('aria-describedby', srId);
     var resultsId = container.id + '-results';
 
     this.container = container;
@@ -1493,7 +1496,7 @@ S2.define('select2/selection/base',[
     container.on('selection:update', function (params) {
       self.update(params.data);
       self.$selection.attr('aria-label', params.data.resultsId);
-      var $label = $('label[for="' + $(self.element).attr('id') + '"]').text();
+      var $label = $('label[for="' + this.$element.attr('id') + '"]').text();
       var $labeltext;
       var $rendered = self.$selection.find('.select2-selection__rendered');
       var $title = $rendered.attr('title');
@@ -1513,7 +1516,7 @@ S2.define('select2/selection/base',[
         $labeltext = 'The selected value is: ' + $title;
       }
       else {
-        $labeltext = 'No value currently selected.';
+        $labeltext = $label + 'No value currently selected.';
       }
       self.$selection.attr('aria-label', $labeltext);
       });
@@ -1756,7 +1759,8 @@ S2.define('select2/selection/multiple',[
     $selection[0].classList.add('select2-selection--multiple');
 
     $selection.html(
-      '<ul class="select2-selection__rendered"></ul>'
+      '<ul class="select2-selection__rendered" ' +
+      'aria-live="assertive" aria-relevant="all"></ul>'
     );
 
     return $selection;
@@ -1768,7 +1772,13 @@ S2.define('select2/selection/multiple',[
     MultipleSelection.__super__.bind.apply(this, arguments);
 
     var id = container.id + '-container';
-    this.$selection.find('.select2-selection__rendered').attr('id', id);
+    this.$selection.attr('role','combobox');
+    this.$selection.siblings('#sr-description'+ container.id)
+    .text('This is a multi-select.' +
+    'Press enter or begin typing to reveal results.' +
+    'Use arrow key to select results' +
+    'Use backspace from the text input to delete existing selected results.');
+     this.$selection.find('.select2-selection__rendered').attr('id', id);
 
     this.$selection.on('click', function (evt) {
       self.trigger('toggle', {
@@ -1846,10 +1856,10 @@ S2.define('select2/selection/multiple',[
     }
 
     var $selections = [];
+    var titles = [];
 
     var selectionIdPrefix = this.$selection.find('.select2-selection__rendered')
       .attr('id') + '-choice-';
-
     for (var d = 0; d < data.length; d++) {
       var selection = data[d];
 
@@ -1885,11 +1895,13 @@ S2.define('select2/selection/multiple',[
       Utils.StoreData($selection[0], 'data', selection);
 
       $selections.push($selection);
+      titles.push(title);
     }
 
     var $rendered = this.$selection.find('.select2-selection__rendered');
 
     $rendered.append($selections);
+    $rendered.attr('title', titles.join(' '));
   };
 
   return MultipleSelection;
@@ -2302,6 +2314,7 @@ S2.define('select2/selection/search',[
 
     this.$search.val(item.text);
     this.handleSearch();
+
   };
 
   Search.prototype.resizeSearch = function () {

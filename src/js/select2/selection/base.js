@@ -14,7 +14,7 @@ define([
 
   BaseSelection.prototype.render = function () {
     var $selection = $(
-      '<span class="select2-selection" aria-describedby="sr-description"' +
+      '<span class="select2-selection"' +
       ' role="button" aria-haspopup="true" aria-expanded="false">' +
       '</span>');
 
@@ -37,11 +37,14 @@ define([
 
   BaseSelection.prototype.bind = function (container, $container) {
     var self = this;
-    var $describedby = $('<span class="visually-hidden" id="sr-description">' +
+    var $describedby = $('<span class="visually-hidden" id="sr-description'+
+      container.id + '">' +
               'This button opens a select. When results are available,' +
               'use up and down arrows to navigate and ' +
               'enter to select </span>');
     this.$selection.after($describedby);
+    var srId = 'sr-description' + container.id;
+    this.$selection.attr('aria-describedby', srId);
     var resultsId = container.id + '-results';
 
     this.container = container;
@@ -69,7 +72,7 @@ define([
     container.on('selection:update', function (params) {
       self.update(params.data);
       self.$selection.attr('aria-label', params.data.resultsId);
-      var $label = $('label[for="' + $(self.element).attr('id') + '"]').text();
+      var $label = $('label[for="' + this.$element.attr('id') + '"]').text();
       var $labeltext;
       var $rendered = self.$selection.find('.select2-selection__rendered');
       var $title = $rendered.attr('title');
@@ -89,7 +92,7 @@ define([
         $labeltext = 'The selected value is: ' + $title;
       }
       else {
-        $labeltext = 'No value currently selected.';
+        $labeltext = $label + 'No value currently selected.';
       }
       self.$selection.attr('aria-label', $labeltext);
       });
