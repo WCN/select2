@@ -868,6 +868,14 @@ S2.define('select2/results',[
       '<ul class="select2-results__options" role="listbox"></ul>'
     );
 
+    // Ignore mouseups on padding, so that
+    // clicks on the scrollbar do not close the list.
+    $results.on('mouseup', function(evt) {
+      if (! $.contains($results[0], $(evt.target).closest('li')[0])) {
+        evt.stopPropagation();
+      }
+    });
+
     if (this.options.get('multiple')) {
       $results.attr('aria-multiselectable', 'true');
     }
