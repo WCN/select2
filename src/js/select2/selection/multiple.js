@@ -145,7 +145,7 @@ define([
       var $remove = $selection.find('.select2-selection__choice__remove');
 
       $remove.attr('title', removeItem());
-      $remove.attr('aria-label', removeItem());
+      $remove.attr('aria-label', removeItem() + ' ' + title);
       $remove.attr('aria-describedby', selectionId);
 
       Utils.StoreData($selection[0], 'data', selection);

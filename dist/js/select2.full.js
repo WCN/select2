@@ -1897,7 +1897,7 @@ S2.define('select2/selection/multiple',[
       var $remove = $selection.find('.select2-selection__choice__remove');
 
       $remove.attr('title', removeItem());
-      $remove.attr('aria-label', removeItem());
+      $remove.attr('aria-label', removeItem() + ' ' + title);
       $remove.attr('aria-describedby', selectionId);
 
       Utils.StoreData($selection[0], 'data', selection);
@@ -4985,7 +4985,7 @@ S2.define('select2/i18n/en',[],function () {
       return 'Remove all items';
     },
     removeItem: function () {
-      return 'Remove item';
+      return 'Remove item from selection';
     },
     search: function() {
       return 'Search';
