@@ -26,7 +26,7 @@ define([
       self._detachPositioningHandler(container);
     });
 
-    this.$dropdownContainer.on('mousedown', function (evt) {
+    this.$dropdownContainer.on('mouseup', function (evt) {
       evt.stopPropagation();
     });
   };

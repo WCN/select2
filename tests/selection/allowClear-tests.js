@@ -120,7 +120,7 @@ test('clicking clear will set the placeholder value', function (assert) {
   }]);
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 
   assert.equal(
     $element.val(),
@@ -175,7 +175,7 @@ test('clicking clear will trigger the unselect event', function (assert) {
   });
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 });
 
 test('preventing the unselect event cancels the clearing', function (assert) {
@@ -202,7 +202,7 @@ test('preventing the unselect event cancels the clearing', function (assert) {
   });
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 
   assert.equal(
     $element.val(),
@@ -263,7 +263,7 @@ test('clicking clear will trigger the clear event', function (assert) {
   });
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 });
 
 test('preventing the clear event cancels the clearing', function (assert) {
@@ -290,7 +290,7 @@ test('preventing the clear event cancels the clearing', function (assert) {
   });
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 
   assert.equal(
     $element.val(),
@@ -321,7 +321,7 @@ test('clear does not work when disabled', function (assert) {
   selection.options.set('disabled', true);
 
   var $remove = $selection.find('.select2-selection__clear');
-  $remove.trigger('mousedown');
+  $remove.trigger('mouseup');
 
   assert.equal(
     $element.val(),
