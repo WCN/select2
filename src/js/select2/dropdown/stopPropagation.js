@@ -18,7 +18,7 @@ define([
     'keydown',
     'keyup',
     'keypress',
-    'mousedown',
+    'mouseup',
     'mouseenter',
     'mouseleave',
     'mousemove',

@@ -37,7 +37,7 @@ define([
       .attr('id', id);
     this.$selection.attr('aria-controls', id);
 
-    this.$selection.on('mousedown', function (evt) {
+    this.$selection.on('mouseup', function (evt) {
       // Only respond to left clicks
       if (evt.which !== 1) {
         return;

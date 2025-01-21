@@ -1678,7 +1678,7 @@ S2.define('select2/selection/single',[
       .attr('id', id);
     this.$selection.attr('aria-controls', id);
 
-    this.$selection.on('mousedown', function (evt) {
+    this.$selection.on('mouseup', function (evt) {
       // Only respond to left clicks
       if (evt.which !== 1) {
         return;
@@ -1995,7 +1995,7 @@ S2.define('select2/selection/allowClear',[
       }
     }
 
-    this.$selection.on('mousedown', '.select2-selection__clear',
+    this.$selection.on('mouseup', '.select2-selection__clear',
       function (evt) {
         self._handleClear(evt);
     });
@@ -4519,7 +4519,7 @@ S2.define('select2/dropdown/attachBody',[
       self._detachPositioningHandler(container);
     });
 
-    this.$dropdownContainer.on('mousedown', function (evt) {
+    this.$dropdownContainer.on('mouseup', function (evt) {
       evt.stopPropagation();
     });
   };
@@ -6222,7 +6222,7 @@ S2.define('select2/dropdown/stopPropagation',[
     'keydown',
     'keyup',
     'keypress',
-    'mousedown',
+    'mouseup',
     'mouseenter',
     'mouseleave',
     'mousemove',
