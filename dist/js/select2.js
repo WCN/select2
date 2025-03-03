@@ -1507,10 +1507,9 @@ S2.define('select2/selection/base',[
       var label = $('label[for="' + this.$element.attr('id') + '"]').text();
       var labeltext;
       var legendtext;
-      console.log(this.$element, $(container), this.$element);
       if ($(this.$element).parents('.search-filter-group')){
-        legendtext= $(this.$element).parents('.search-filter-group').find('.search-filter-title').text();
-        console.log(legendtext);
+        legendtext= $(this.$element).parents('.search-filter-group')
+        .find('.search-filter-title').text();
       }
       var $rendered = self.$selection.find('.select2-selection__rendered');
       var title = $rendered.attr('title');
@@ -1521,14 +1520,12 @@ S2.define('select2/selection/base',[
       if (title && title == 'Click here to select criteria' )
          {title = undefined; }
       if (label && title) {
-        console.log('lbltitle', label);
         labeltext = label + ' The selected value is:' + title;
       }
       else if (label && !title) {
         labeltext = label + 'No value currently selected.';
       }
       else if (legendtext) {
-        console.log('lgnd', legendtext);
         labeltext = 'Show more for category ' + legendtext;
       }
       else if (title && !label) {
@@ -1537,7 +1534,6 @@ S2.define('select2/selection/base',[
       else {
         labeltext = label + 'No value currently selected.';
       }
-      console.log('label text', labeltext, label);
       self.$selection.attr('aria-label', labeltext);
       });
 

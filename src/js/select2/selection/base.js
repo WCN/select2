@@ -75,10 +75,9 @@ define([
       var label = $('label[for="' + this.$element.attr('id') + '"]').text();
       var labeltext;
       var legendtext;
-      console.log(this.$element, $(container), this.$element);
       if ($(this.$element).parents('.search-filter-group')){
-        legendtext= $(this.$element).parents('.search-filter-group').find('.search-filter-title').text();
-        console.log(legendtext);
+        legendtext= $(this.$element).parents('.search-filter-group')
+        .find('.search-filter-title').text();
       }
       var $rendered = self.$selection.find('.select2-selection__rendered');
       var title = $rendered.attr('title');
@@ -89,7 +88,6 @@ define([
       if (title && title == 'Click here to select criteria' )
          {title = undefined; }
       if (label && title) {
-        console.log('lbltitle', label);
         labeltext = label + ' The selected value is:' + title;
       }
       else if (label && !title) {
@@ -104,7 +102,6 @@ define([
       else {
         labeltext = label + 'No value currently selected.';
       }
-      console.log('label text', labeltext, label);
       self.$selection.attr('aria-label', labeltext);
       });
 
