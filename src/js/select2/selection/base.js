@@ -72,29 +72,37 @@ define([
     container.on('selection:update', function (params) {
       self.update(params.data);
       self.$selection.attr('aria-label', params.data.resultsId);
-      var $label = $('label[for="' + this.$element.attr('id') + '"]').text();
-      var $labeltext;
+      var label = $('label[for="' + this.$element.attr('id') + '"]').text();
+      var labeltext;
+      var legendtext;
+      if ($(this.$element).parents('.search-filter-group')){
+        legendtext= $(this.$element).parents('.search-filter-group')
+        .find('.search-filter-title').text();
+      }
       var $rendered = self.$selection.find('.select2-selection__rendered');
-      var $title = $rendered.attr('title');
+      var title = $rendered.attr('title');
       // this is here to prevent the aria-label breaking
       // for the dropdown within the advanced search
       // which currently has to be left enabled
       // even if all other select2s are hidden
-      if ($title && $title == 'Click here to select criteria' )
-         {$title = undefined; }
-      if ($label && $title) {
-        $labeltext = $label + 'The selected value is:' + $title;
+      if (title && title == 'Click here to select criteria' )
+         {title = undefined; }
+      if (label && title) {
+        labeltext = label + ' The selected value is:' + title;
       }
-      else if ($label && !$title) {
-        $labeltext = $label + 'No value currently selected.';
+      else if (label && !title) {
+        labeltext = label + 'No value currently selected.';
       }
-      else if ($title && !$label) {
-        $labeltext = 'The selected value is: ' + $title;
+      else if (legendtext) {
+        labeltext = 'Show more for category ' + legendtext;
+      }
+      else if (title && !label) {
+        labeltext = 'The selected value is: ' + title;
       }
       else {
-        $labeltext = $label + 'No value currently selected.';
+        labeltext = label + 'No value currently selected.';
       }
-      self.$selection.attr('aria-label', $labeltext);
+      self.$selection.attr('aria-label', labeltext);
       });
 
     container.on('open', function () {
