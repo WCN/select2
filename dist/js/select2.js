@@ -4263,6 +4263,7 @@ S2.define('select2/dropdown/search',[
 
     var $search = $(
       '<span class="select2-search select2-search--dropdown">' +
+        '<label class="select2-search__label"></label>' +
         '<input class="select2-search__field" type="search" tabindex="-1"' +
         ' autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
@@ -4270,10 +4271,25 @@ S2.define('select2/dropdown/search',[
     );
 
     this.$searchContainer = $search;
+    this.$searchLabel = $search.find('label');
     this.$search = $search.find('input');
 
     this.$search.prop('autocomplete', this.options.get('autocomplete'));
-    this.$search.attr('aria-label', searchLabel());
+
+    // The visible label provides the accessible name of the search box, so
+    // the text a sighted user sees matches what assistive technology and
+    // voice control users get.
+    var labelText = searchLabel();
+
+    if (typeof labelText === 'string' && labelText.trim() !== '') {
+      this.$searchLabel.text(labelText);
+    } else {
+      // A blank translation would leave an empty label and a search box with
+      // no accessible name, so drop the label and fall back to a default name
+      this.$searchLabel.remove();
+      this.$searchLabel = $();
+      this.$search.attr('aria-label', 'Search');
+    }
 
     $rendered.prepend($search);
 
@@ -4284,8 +4300,12 @@ S2.define('select2/dropdown/search',[
     var self = this;
 
     var resultsId = container.id + '-results';
+    var searchId = container.id + '-search';
 
     decorated.call(this, container, $container);
+
+    this.$search.attr('id', searchId);
+    this.$searchLabel.attr('for', searchId);
 
     this.$search.on('keydown', function (evt) {
       self.trigger('keypress', evt);

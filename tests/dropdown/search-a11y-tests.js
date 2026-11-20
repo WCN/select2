@@ -184,18 +184,124 @@ test('aria-controls should be removed when closed', function (assert) {
   );
 });
 
-test('aria-label attribute is present', function (assert) {
+test('search box has a visible label', function (assert) {
   var $select = $('#qunit-fixture .single');
 
   var dropdown = new DropdownSearch($select, options);
   var $dropdown = dropdown.render();
 
   var container = new MockContainer();
+  container.id = 'select2-test';
   dropdown.bind(container, $('<span></span>'));
 
+  var $label = $dropdown.find('label');
+  var $search = $dropdown.find('input');
+
+  assert.equal($label.length, 1, 'The search box has a label');
+
   assert.equal(
-    $dropdown.find('input').attr('aria-label'),
+    $label.text(),
     'Search',
-    'The search box has a label'
+    'The label is visible text from the translations'
   );
+
+  assert.ok(
+    $search.attr('id'),
+    'The search box has an id so that the label can reference it'
+  );
+
+  assert.equal(
+    $label.attr('for'),
+    $search.attr('id'),
+    'The label is associated with the search box'
+  );
+
+  assert.equal(
+    $search.attr('id'),
+    'select2-test-search',
+    'The id of the search box is derived from the container id'
+  );
+
+  assert.ok(
+    !$search.attr('aria-label'),
+    'The visible label is used instead of an aria-label'
+  );
+});
+
+test('search box label can be overridden', function (assert) {
+  var $select = $('#qunit-fixture .single');
+
+  var customOptions = new Options({
+    language: {
+      search: function () {
+        return 'Search <b>filters</b>';
+      }
+    }
+  });
+
+  var dropdown = new DropdownSearch($select, customOptions);
+  var $dropdown = dropdown.render();
+
+  var container = new MockContainer();
+  dropdown.bind(container, $('<span></span>'));
+
+  var $label = $dropdown.find('label');
+
+  assert.equal(
+    $label.text(),
+    'Search <b>filters</b>',
+    'The label uses the overridden translation as plain text'
+  );
+
+  assert.equal(
+    $label.find('b').length,
+    0,
+    'The label text is not interpreted as HTML'
+  );
+});
+
+test('blank search label falls back to an aria-label', function (assert) {
+  function render (blank) {
+    var $select = $('#qunit-fixture .single');
+
+    var customOptions = new Options({
+      language: {
+        search: function () {
+          return blank;
+        }
+      }
+    });
+
+    var dropdown = new DropdownSearch($select, customOptions);
+    var $dropdown = dropdown.render();
+
+    var container = new MockContainer();
+    dropdown.bind(container, $('<span></span>'));
+
+    return $dropdown;
+  }
+
+  var blankTranslations = [
+    { description: 'an empty string', value: '' },
+    { description: 'a whitespace-only string', value: '   ' },
+    { description: 'null', value: null },
+    { description: 'undefined', value: undefined }
+  ];
+
+  for (var i = 0; i < blankTranslations.length; i++) {
+    var description = blankTranslations[i].description;
+    var $dropdown = render(blankTranslations[i].value);
+
+    assert.equal(
+      $dropdown.find('label').length,
+      0,
+      'No empty label is rendered for ' + description
+    );
+
+    assert.equal(
+      $dropdown.find('input').attr('aria-label'),
+      'Search',
+      'The search box still has an accessible name for ' + description
+    );
+  }
 });
