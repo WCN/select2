@@ -23,7 +23,17 @@ define([
     this.$search = $search.find('textarea');
 
     this.$search.prop('autocomplete', this.options.get('autocomplete'));
-    this.$search.attr('aria-label', searchLabel());
+
+    // There is no room for a visible label inside the selection, so a
+    // `data-search-label` attribute on the original select (read in as the
+    // `searchLabel` option) is used as the accessible name instead
+    var labelText = this.options.get('searchLabel');
+
+    if (typeof labelText !== 'string' || labelText.trim() === '') {
+      labelText = searchLabel();
+    }
+
+    this.$search.attr('aria-label', labelText);
 
     var $rendered = decorated.call(this);
 
