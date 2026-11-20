@@ -7,24 +7,24 @@ jobs:
     name: Linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: 20
       - name: npm install
         run: npm install
       - name: Run linting
-        run: grunt compile lint
+        run: npx grunt compile lint
   tests:
     name: Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: 20
       - name: npm install
         run: npm install
       - name: Run tests
@@ -33,12 +33,12 @@ jobs:
     name: Minification
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js 12
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: 12
+          node-version: 20
       - name: npm install
         run: npm install
       - name: Run minification
-        run: grunt compile minify
+        run: npx grunt compile minify
