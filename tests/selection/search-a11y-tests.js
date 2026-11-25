@@ -235,3 +235,52 @@ test('aria-label attribute is present', function (assert) {
     'The search box has a label'
   );
 });
+
+test('data-search-label is used as the aria-label', function (assert) {
+  var $select = $(
+    '<select multiple data-search-label="Search locations">' +
+    '<option>One</option></select>'
+  );
+  $('#qunit-fixture').append($select);
+
+  var customOptions = new Options({}, $select);
+
+  var CustomSelection = Utils.Decorate(MultipleSelection, InlineSearch);
+  var selection = new CustomSelection($select, customOptions);
+  var $selection = selection.render();
+
+  var container = new MockContainer();
+  selection.bind(container, $('<span></span>'));
+
+  selection.update([]);
+
+  assert.equal(
+    $selection.find('textarea').attr('aria-label'),
+    'Search locations',
+    'The search box is named by data-search-label'
+  );
+});
+
+test('blank data-search-label uses the translation', function (assert) {
+  var $select = $(
+    '<select multiple data-search-label="  "><option>One</option></select>'
+  );
+  $('#qunit-fixture').append($select);
+
+  var customOptions = new Options({}, $select);
+
+  var CustomSelection = Utils.Decorate(MultipleSelection, InlineSearch);
+  var selection = new CustomSelection($select, customOptions);
+  var $selection = selection.render();
+
+  var container = new MockContainer();
+  selection.bind(container, $('<span></span>'));
+
+  selection.update([]);
+
+  assert.equal(
+    $selection.find('textarea').attr('aria-label'),
+    'Search',
+    'The search box falls back to the translated label'
+  );
+});

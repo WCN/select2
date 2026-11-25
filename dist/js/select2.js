@@ -2131,7 +2131,17 @@ S2.define('select2/selection/search',[
     this.$search = $search.find('textarea');
 
     this.$search.prop('autocomplete', this.options.get('autocomplete'));
-    this.$search.attr('aria-label', searchLabel());
+
+    // There is no room for a visible label inside the selection, so a
+    // `data-search-label` attribute on the original select (read in as the
+    // `searchLabel` option) is used as the accessible name instead
+    var labelText = this.options.get('searchLabel');
+
+    if (typeof labelText !== 'string' || labelText.trim() === '') {
+      labelText = searchLabel();
+    }
+
+    this.$search.attr('aria-label', labelText);
 
     var $rendered = decorated.call(this);
 
@@ -4263,6 +4273,7 @@ S2.define('select2/dropdown/search',[
 
     var $search = $(
       '<span class="select2-search select2-search--dropdown">' +
+        '<label class="select2-search__label"></label>' +
         '<input class="select2-search__field" type="search" tabindex="-1"' +
         ' autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
@@ -4270,10 +4281,24 @@ S2.define('select2/dropdown/search',[
     );
 
     this.$searchContainer = $search;
+    this.$searchLabel = $search.find('label');
     this.$search = $search.find('input');
 
     this.$search.prop('autocomplete', this.options.get('autocomplete'));
-    this.$search.attr('aria-label', searchLabel());
+
+    // A `data-search-label` attribute on the original select (read in as the
+    // `searchLabel` option) is shown as a visible label, so the text a sighted
+    // user sees matches what assistive technology and voice control users get.
+    // Without one, the search box keeps the translated hidden aria-label.
+    var labelText = this.options.get('searchLabel');
+
+    if (typeof labelText === 'string' && labelText.trim() !== '') {
+      this.$searchLabel.text(labelText);
+    } else {
+      this.$searchLabel.remove();
+      this.$searchLabel = $();
+      this.$search.attr('aria-label', searchLabel());
+    }
 
     $rendered.prepend($search);
 
@@ -4284,8 +4309,12 @@ S2.define('select2/dropdown/search',[
     var self = this;
 
     var resultsId = container.id + '-results';
+    var searchId = container.id + '-search';
 
     decorated.call(this, container, $container);
+
+    this.$search.attr('id', searchId);
+    this.$searchLabel.attr('for', searchId);
 
     this.$search.on('keydown', function (evt) {
       self.trigger('keypress', evt);

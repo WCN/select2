@@ -57,6 +57,13 @@
   display: block;
   padding: 4px;
 
+  .select2-search__label {
+    display: block;
+    font-size: 0.875em;
+    line-height: 1.25;
+    margin: 0 0 2px;
+  }
+
   .select2-search__field {
     padding: 4px;
     width: 100%;
